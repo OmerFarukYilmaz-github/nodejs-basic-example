@@ -2,6 +2,7 @@ require("dotenv/config");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { request } = require("express");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -10,18 +11,19 @@ const helloPath = "/hello"
 app.use(cors());
 app.use(bodyParser.json());
 
-const middleware = function (req, res, /*answer*/) {
+const middleware = function (req, res, next) 
+{
   console.log("Middleware got a new request");
- // res.json(answer);
+ next();
 };
 
-app.use(middleware);
 
-app.get("/", middleware/*(answer = "Open")*/, function (req, res) 
+app.get("/", middleware, function (req, res) 
 {
   console.log("Opening page");
-  res.json("aaaaaa");
+  res.json("It'S a opening page");
 });
+
 
 app.get(helloPath, middleware, function (req, res) 
 {
@@ -29,7 +31,8 @@ app.get(helloPath, middleware, function (req, res)
   res.json("It's a get request");
 });
 
-app.post(helloPath, middleware, function (req, res) 
+
+app.post(helloPath, middleware,function (req, res) 
 {
   console.log("Post page");
   res.json("It's a post request");
@@ -47,6 +50,8 @@ app.delete(helloPath, middleware, function (req, res)
   res.json("It's a delete request");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, () => 
+{
   console.log("Ready on http://localhost:" + PORT);
-});
+}
+);
